@@ -105,7 +105,7 @@ with st.form('Loan Predictor'):
 
 if submit:
     input_data = pd.DataFrame({
-        'credit_score':[credit_score],
+        'cibil_score':[credit_score],
         'loan_term':[loan_term],
         'loan_amount':[loan_amount],
         'income_annum':[income_annum],
