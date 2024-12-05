@@ -106,4 +106,8 @@ if submit:
         else:
             st.error('You are not eligible for a loan.')
     with col4:
-        st.write(probablity)
+        approval_prob = probablity[0][1] * 100
+        st.metric(
+            "Probability of Approval",
+            f"{approval_prob:.1f}%"
+        )
