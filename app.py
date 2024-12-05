@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import pickle
-import base64
 
 #streamlit application that calls forest_model.sav as a loan predictor
 
@@ -12,28 +11,10 @@ st.set_page_config(
 )
 
 @st.cache_data
-def get_base64_of_bin_file(bin_file):
-    with open(bin_file, 'rb') as f:
-        data = f.read()
-    return base64.b64encode(data).decode()
+def load_data():
+    return pickle.load(open('forest.sav','rb'))
 
-def set_png_as_page_bg(png_file):
-    bin_str = get_base64_of_bin_file(png_file)
-    page_bg_img = '''
-    <style>
-    body {
-    background-image: url("data:image/png;base64,%s");
-    background-size: cover;
-    }
-    </style>
-    ''' % bin_str
-    
-    st.markdown(page_bg_img, unsafe_allow_html=True)
-    return
-
-set_png_as_page_bg('test.png')
-
-loaded_model = pickle.load(open('tree_model.sav','rb'))
+loaded_model = load_data()
 
 st.title("💰Loan Predictor💰")
 st.subheader("This is a simple loan predictor application that uses a machine learning model to predict the likelihood of getting a loan approved")
@@ -105,24 +86,24 @@ with st.form('Loan Predictor'):
 
 if submit:
     input_data = pd.DataFrame({
-        'cibil_score':[credit_score],
-        'loan_term':[loan_term],
-        'loan_amount':[loan_amount],
+        'no_of_dependents':[no_of_dependents],
         'income_annum':[income_annum],
+        'loan_amount':[loan_amount],
+        'loan_term':[loan_term],
+        'cibil_score':[credit_score],
         'residential_assets_value':[residential_assets_value],
-        'luxury_assets_value':[luxury_assets_value],
         'commercial_assets_value':[commercial_assets_value],
-        'no_of_dependents':[no_of_dependents]
+        'luxury_assets_value':[luxury_assets_value],
     })
 
     prediction = loaded_model.predict(input_data)
     probablity = loaded_model.predict_proba(input_data)
 
-col3,col4 = st.columns(2)
-with col3:
-    if prediction == 1:
-        st.success('You are eligible for a loan!')
-    else:
-        st.error('You are not eligible for a loan.')
-with col4:
-    st.write(probablity)
+    col3,col4 = st.columns(2)
+    with col3:
+        if prediction == 1:
+            st.success('You are eligible for a loan!')
+        else:
+            st.error('You are not eligible for a loan.')
+    with col4:
+        st.write(probablity)
