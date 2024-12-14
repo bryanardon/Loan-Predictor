@@ -55,21 +55,21 @@ with st.form('Loan Predictor'):
     with  col2:
         residential_assets_value = st.number_input(
             'Enter Residential Assets Value ($)',
-            min_value=10000,
+            min_value=0,
             max_value=10000000,
             step=10000,
             help='Single-family homes, duplexes, triplexes, condos, townhouses, vacation homes, etc.'
         )
         luxury_assets_value = st.number_input(
             'Enter Luxury Assets Value ($)',
-            min_value=10000,
+            min_value=0,
             max_value=10000000,
             step=10000,
             help='Luxury cars, boats, airplanes, jewelry, art, collectibles, etc.'
         )
         commercial_assets_value = st.number_input(
             'Enter Commercial Assets Value ($)',
-            min_value=10000,
+            min_value=0,
             max_value=10000000,
             step=10000,
             help='Commercial real estate, businesses, etc.'
